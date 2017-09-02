@@ -3,7 +3,11 @@
 import string
 import time
 import random
-
+import requests
+import json
+#import requests.packages.urllib3
+#requests.packages.urllib3.disable_warnings()
+from secrets import *
 
 fileNames = []
 fileNames.append("./wordLists/colors.txt")
@@ -13,10 +17,19 @@ fileNames.append("./wordLists/temperatureWords.txt")
 
 NUM_OF_WORDLISTS = len(fileNames)
 
-
-def GetSyllableCount():
-        return numSyllables
-
+#takes a word, returns a list of its syllables
+def Syllabification(word):
+        print(word)
+        url = "https://wordsapiv1.p.mashape.com/words/" + word + "/syllables"
+        headers = {"X-Mashape-Key": WORDS_KEY, "Accept": "application/json"}
+        raw_response = requests.get(url, headers)
+        print(raw_response.status_code)
+        if (raw_response.status_code == 200):
+                parsed_response = raw_response.json()
+                return parsed_response["syllables"]["list"]
+                #parsed_response.json() = json.parse(raw_response)
+        else:
+                return []
 
 #for when you have over 2 syllables
 def ShortenWord( word ):
@@ -55,6 +68,11 @@ def SpliceWords( firstWord, secondWord ):
 def MakeName( wordList1, wordList2 ):
         firstWord = wordList1[random.randrange( 0, (len( wordList1 )) )]
         secondWord = wordList2[random.randrange( 0, (len( wordList2 )) )]
+
+        firstWordSyllables = Syllabification( firstWord )
+
+        for syllable in firstWordSyllables:
+                print( syllable )
 
         '''ShortenWord( firstWord )
         ShortenWord( secondWord )
