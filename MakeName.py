@@ -3,6 +3,7 @@
 import string
 import time
 import random
+import unirest
 import requests
 import json
 #import requests.packages.urllib3
@@ -17,17 +18,16 @@ fileNames.append("./wordLists/temperatureWords.txt")
 
 NUM_OF_WORDLISTS = len(fileNames)
 
-#takes a word, returns a list of its syllables
+#takes a word, returns a list of its syllables; if request fails returns empty
 def Syllabification(word):
-        print(word)
         url = "https://wordsapiv1.p.mashape.com/words/" + word + "/syllables"
-        headers = {"X-Mashape-Key": WORDS_KEY, "Accept": "application/json"}
-        raw_response = requests.get(url, headers)
-        print(raw_response.status_code)
-        if (raw_response.status_code == 200):
-                parsed_response = raw_response.json()
-                return parsed_response["syllables"]["list"]
-                #parsed_response.json() = json.parse(raw_response)
+
+        response = unirest.get( url,
+                  headers = {"X-Mashape-Key": WORDS_KEY, "Accept": "application/json"}
+                )
+
+        if (response.code == 200):
+                return response.body["syllables"]["list"]
         else:
                 return []
 
