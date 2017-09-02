@@ -1,11 +1,15 @@
 # Where we actually generate the Pokemon name
 
 import string
+import time
+import random
 
 
 fileNames = []
-fileNames.append("colors.txt")
-fileNames.append("japaneseOnomatopoeias.txt")
+fileNames.append("./wordLists/colors.txt")
+fileNames.append("./wordLists/japaneseOnomatopoeias.txt")
+fileNames.append("./wordLists/englishOnomatopoeias.txt")
+fileNames.append("./wordLists/temperatureWords.txt")
 
 NUM_OF_WORDLISTS = len(fileNames)
 
@@ -16,10 +20,10 @@ def GetSyllableCount():
 
 #for when you have over 2 syllables
 def ShortenWord( word ):
-        if( GetSyllableCount(word) <= 2 )
-        return word
-        else SHAVE OFF SOME SYLLABLES hahaha
+        '''if( GetSyllableCount(word) <= 2 ):
                 return word
+        else SHAVE OFF SOME SYLLABLES hahaha
+                return word'''
 
 
 # HOW DO WE COMBINE THE TWO FUNCTIONS BELOW?
@@ -49,36 +53,37 @@ def SpliceWords( firstWord, secondWord ):
 # this is the big one called by GetName. hi-level assumption is that they're from different files
 # we pass the lists and not the words so that we can get a new word from the same list if one is not compatible
 def MakeName( wordList1, wordList2 ):
-        firstWord = wordList1[randrange( 0, (len( wordList1 ) - 1) )]
-        secondWord = wordList2[randrange( 0, (len( wordList2 ) - 1) )]
+        firstWord = wordList1[random.randrange( 0, (len( wordList1 )) )]
+        secondWord = wordList2[random.randrange( 0, (len( wordList2 )) )]
 
-        ShortenWord( firstWord )
+        '''ShortenWord( firstWord )
         ShortenWord( secondWord )
 
         while( !CheckSpliceCompatibility( firstWord, secondWord ) )
-                secondWord = wordList2[randrange( 0, (len( wordList2 ) - 1) )]
+                secondWord = wordList2[random.randrange( 0, (len( wordList2 ) - 1) )]
                 ShortenWord( secondWord )
 
-        SpliceWords( firstWord, secondWord )
-        return text
+        SpliceWords( firstWord, secondWord )'''
+
+        return ( firstWord + secondWord )
 
 def GetName():
 
         # change this logic later to use a better read in file method haha
         # for now this makes 2 big string arrays of the 2 random lists
-        firstListNum = randrange(1, NUM_OF_WORDLISTS)
-        f = open( fileNames[firstListNum - 1], 'r' )
-        wordList1 = f.readlines()
+        firstListNum = random.randrange( 0, NUM_OF_WORDLISTS )
+        f = open( fileNames[ firstListNum ], 'r' )
+        wordList1 = f.read().splitlines()
+        secondListNum = random.randrange( 0, NUM_OF_WORDLISTS )
+        while( secondListNum == firstListNum ):
+                secondListNum = random.randrange( 0, NUM_OF_WORDLISTS )
 
-        secondListNum = randrange( 1, NUM_OF_WORDLISTS )
-        while( secondListNum == firstListNum):
-                secondListNum = randrange( 1, NUM_OF_WORDLISTS )
+        f = open( fileNames[secondListNum ], 'r' )
+        wordList2 = f.read().splitlines()
 
-        f = open( fileNames[secondListNum - 1], 'r' )
-        wordList2 = f.readlines()
 
 
         # now that we have the lists we'll be using
         text = MakeName( wordList1, wordList2 )
-        string.title(text) # this should capitalize the word??? python????
+        text = text.title() # this should capitalize the word??? python????
         return text
