@@ -1,3 +1,3 @@
-# twitterbot_framework
+# credit where it's due
 
-A basic framework for creating Twitter bots using Python 3 and [tweepy](http://www.tweepy.org). This goes along with my [tutorial](http://blog.mollywhite.net/twitter-bots-pt2/) on creating Twitter bots.
+A silly bot made by following Molly White's tutorial here: http://blog.mollywhite.net/twitter-bots-pt2/
