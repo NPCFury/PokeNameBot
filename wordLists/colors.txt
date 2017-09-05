@@ -107,7 +107,6 @@ ultramarine
 umber
 vermilion
 violet
-viridian
 wheat
 white
 wisteria
