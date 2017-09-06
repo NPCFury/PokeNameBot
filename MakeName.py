@@ -25,8 +25,8 @@ NUM_OF_WORDLISTS = len(fileNames)
 
 #takes a word, returns a list of its syllables; if request fails returns empty
 def Syllabification( word ):
-        print("About to syllabify:")
-        print(word)
+        #print("About to syllabify:")
+        #print(word)
 
         url = "https://wordsapiv1.p.mashape.com/words/" + word + "/syllables"
 
@@ -39,12 +39,12 @@ def Syllabification( word ):
                 response = unirest.get( url,
                   headers = {"X-Mashape-Key": WORDS_KEY, "Accept": "application/json"}
                 )
-                print( response.code )
+                #print( response.code )
                 requestCap -= 1
 
 
         if( response.code == 200 ):
-                print(response.body)
+                #print(response.body)
                 return response.body["syllables"]["list"]
         else:
                 print("ERROR: empty list returned")
@@ -70,7 +70,6 @@ def ShortenWord( wordArray, first ):
                         return ( wordArray[len(wordArray) - 2] + wordArray[len(wordArray) - 1] )
 
 
-# HOW DO WE COMBINE THE TWO FUNCTIONS BELOW?
 
 # This is after we have two properly shortened words
 def CheckSpliceCompatibility( firstWord, secondWord ):
@@ -85,15 +84,17 @@ def CheckSpliceCompatibility( firstWord, secondWord ):
 # Put the two already compatable parts together
 def SpliceWords( firstWord, secondWord ):
 
-        #firstWord = firstWord[:-1] # this takes a letter off the end
-        secondWord = secondWord[1:] # this should take a letter off the front...?
+        if( firstWord == "" or secondWord == "" ):
+                return ""
+        else:
+                #firstWord = firstWord[:-1] # this takes a letter off the end
+                secondWord = secondWord[1:] # this should take a letter off the front...?
 
-        if( secondWord[0] == firstWord[len(firstWord) - 1] ):
-                print("Matching splice letters. Merging...")
-                secondWord = secondWord[1:]
+                if( secondWord[0] == firstWord[len(firstWord) - 1] ):
+                        #print("Matching splice letters. Merging...")
+                        secondWord = secondWord[1:]
 
-
-        return ( firstWord + secondWord )#[1:] )
+                return ( firstWord + secondWord )#[1:] )
 
 
 
@@ -127,8 +128,8 @@ def MakeName( wordList1, wordList2, firstListNum, secondListNum ):
         else:
                 secondWordUnsyllabified = secondWord
 
-        print(firstWordUnsyllabified)
-        print(secondWordUnsyllabified)
+        #print(firstWordUnsyllabified)
+        #print(secondWordUnsyllabified)
 
         name = SpliceWords( firstWordUnsyllabified, secondWordUnsyllabified )
 
